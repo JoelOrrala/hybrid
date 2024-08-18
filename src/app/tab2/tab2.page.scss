@@ -1,0 +1,43 @@
+ion-content {
+  --background: #e8f8f5; /* Color de fondo predeterminado */
+  padding: 16px;
+  background-image: url("https://png.pngtree.com/background/20220716/original/pngtree-cartoon-cat-and-dog-cute-pet-frame-picture-image_1635435.jpg");
+  background-size: cover; /* Asegura que la imagen cubra todo el área */
+  background-position: center; /* Centra la imagen en el contenedor */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+ion-header {
+  --background: #45b39d;
+  --color: #ffffff;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ion-title {
+  text-align: center;
+  width: 100%;
+}
+
+h2 {
+  color: #45b39d;
+  font-weight: bold;
+  margin: 0;
+}
+
+p {
+  color: black;
+  margin: 0;
+}
+
+ion-button {
+  --background: #ffffff;
+  --color: black;
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+}

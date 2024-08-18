@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -62,7 +63,11 @@ import { Cita } from '../interfaces/cita';
 export class Tab1Page {
   public mascotas: Mascota[] = [];
 
-  constructor(private dataProvider: ProviderService, private fb: FormBuilder) {}
+  constructor(
+    private dataProvider: ProviderService,
+    private fb: FormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loadData();
@@ -84,6 +89,10 @@ export class Tab1Page {
         });
       }
     });
+  }
+
+  navigateToDetails(cita: Cita) {
+    this.router.navigate(['/tabs/tab2', { cita: JSON.stringify(cita) }]);
   }
 
   nuevaMascota = this.fb.group({

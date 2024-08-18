@@ -39,23 +39,21 @@
     </ion-card-header>
     <ion-card-content>
       <ion-list>
-        <!-- Iterar sobre el array de mascotas -->
         <ng-container *ngFor="let mascota of mascotas">
-          <!-- Verificar si la mascota tiene citas -->
           <ng-container *ngIf="mascota.citas && mascota.citas.length > 0">
-            <!-- Iterar sobre el array de citas de cada mascota -->
             <ion-item *ngFor="let cita of mascota.citas">
               <ion-label>
                 <h2>{{ mascota.nombre }}</h2>
                 <p>{{ cita.fecha }} - {{ cita.hora }}</p>
               </ion-label>
-              <ion-button fill="outline" slot="end">Ver detalles</ion-button>
+              <ion-button fill="outline" slot="end" (click)="navigateToDetails(cita)">Ver detalles</ion-button>
             </ion-item>
           </ng-container>
         </ng-container>
       </ion-list>
     </ion-card-content>
   </ion-card>
+
 
   <!-- Modal para agregar nueva mascota -->
   <ion-modal #modal trigger="open-modal">
@@ -64,26 +62,19 @@
         <ion-toolbar>
           <ion-title>Agregar nueva mascota</ion-title>
           <ion-buttons slot="end">
-            <ion-button color="light" (click)="modal.dismiss()"
-              >Cerrar</ion-button
-            >
+            <ion-button color="light" (click)="modal.dismiss()">Cerrar</ion-button>
           </ion-buttons>
         </ion-toolbar>
 
         <ion-list>
           <ion-item>
             <ion-label position="floating">Nombre</ion-label>
-            <ion-input
-              [(ngModel)]="nuevaMascota.controls.nombre.value"
-            ></ion-input>
+            <ion-input [(ngModel)]="nuevaMascota.controls.nombre.value"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Fecha de Nacimiento</ion-label>
-            <ion-datetime
-              presentation="date"
-              [preferWheel]="true"
-              [(ngModel)]="nuevaMascota.controls.fechaNacimiento.value"
-            ></ion-datetime>
+            <ion-datetime presentation="date" [preferWheel]="true"
+              [(ngModel)]="nuevaMascota.controls.fechaNacimiento.value"></ion-datetime>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Tipo</ion-label>
@@ -95,20 +86,14 @@
           </ion-item>
           <ion-item>
             <ion-label position="floating">Raza</ion-label>
-            <ion-input
-              [(ngModel)]="nuevaMascota.controls.raza.value"
-            ></ion-input>
+            <ion-input [(ngModel)]="nuevaMascota.controls.raza.value"></ion-input>
           </ion-item>
           <ion-item>
             <ion-label position="floating">Foto (URL)</ion-label>
-            <ion-input
-              [(ngModel)]="nuevaMascota.controls.foto.value"
-            ></ion-input>
+            <ion-input [(ngModel)]="nuevaMascota.controls.foto.value"></ion-input>
           </ion-item>
         </ion-list>
-        <ion-button expand="full" (click)="guardarMascota()"
-          >Guardar Mascota</ion-button
-        >
+        <ion-button expand="full" (click)="guardarMascota()">Guardar Mascota</ion-button>
       </ion-content>
     </ng-template>
   </ion-modal>
