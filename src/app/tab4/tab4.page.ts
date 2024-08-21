@@ -1,19 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonImg, IonInput, IonDatetime, IonSelect } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonImg, IonInput, IonDatetime, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline, trashOutline } from 'ionicons/icons';
 import { AnimationController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular/standalone';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, format } from 'date-fns';
+import { HttpClientModule } from '@angular/common/http';
+import { ProviderService } from '../services/provider.service';
+import { PhotoService } from '../services/photo.service';
+import { Mascota } from '../interfaces/mascota';
+import { Cita } from '../interfaces/cita';
 
 @Component({
   selector: 'app-tab4',
   templateUrl: './tab4.page.html',
   styleUrls: ['./tab4.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonModal, IonImg, IonInput, IonDatetime, IonSelect, ReactiveFormsModule]
+  imports: [HttpClientModule, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonModal, IonImg, IonInput, IonDatetime, IonSelect, ReactiveFormsModule, IonSelectOption],
+  providers: [ProviderService],
 })
 export class Tab4Page implements OnInit {
   appointments = [
@@ -25,8 +31,9 @@ export class Tab4Page implements OnInit {
   formularioCitas: FormGroup;
   defaultDate: string;
   defaultTime: string;
+  public mascotas: Mascota[] = [];
 
-  constructor(private animationCtrl: AnimationController, private fb: FormBuilder) {
+  constructor(private animationCtrl: AnimationController, private fb: FormBuilder, private dataProvider: ProviderService, private photoService: PhotoService,) {
     addIcons({ addOutline, trashOutline });
 
     const now = new Date();
@@ -40,11 +47,32 @@ export class Tab4Page implements OnInit {
       veterinario: ['', [Validators.required]],
       fecha: [this.defaultDate],
       hora: [this.defaultTime],
+      mascota: [''],
     });
 
     this.formularioCitas.get('fecha')!.valueChanges.subscribe(value => {
       if (value !== this.defaultDate) {
         this.formularioCitas.get('fecha')!.markAsTouched();
+      }
+    });
+
+    this.loadMascotas();
+  }
+
+  loadMascotas() {
+    this.dataProvider.getResponse().subscribe(async (response) => {
+      if (response != null) {
+        this.mascotas = Object.values(response) as Mascota[];
+
+        for (const mascota of this.mascotas) {
+          if (mascota.citas && Array.isArray(mascota.citas)) {
+            mascota.citas.sort((a: Cita, b: Cita) => {
+              const dateA = new Date(a.fecha).getTime();
+              const dateB = new Date(b.fecha).getTime();
+              return dateA - dateB;
+            });
+          }
+        }
       }
     });
   }

@@ -34,6 +34,12 @@
         <form [formGroup]="formularioCitas" (ngSubmit)="onSubmit()">
 
           <ion-item>
+            <ion-label position="floating">Mascota</ion-label>
+            <ion-select fromControlName="mascota" *ngIf="mascotas.length > 0">
+              <ion-select-option *ngFor="let mascota of mascotas" [value]="mascota">{{ mascota.nombre }} - {{mascota.fecha_nacimiento }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
             <ion-label position="floating">Motivo</ion-label><br>
             <ion-input formControlName="motivo"></ion-input>
             <ion-label position="floating" *ngIf="formularioCitas.controls['motivo'].touched && formularioCitas.controls['motivo'].invalid">Requerido</ion-label><br><br>
