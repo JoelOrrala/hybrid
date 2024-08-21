@@ -128,10 +128,10 @@ export class Tab1Page {
         this.selectedFile
       );
       const nuevaMascotaData: Mascota = {
-        nombre: this.nuevaMascota.get('nombre')?.value || '',
-        fecha_nacimiento: this.nuevaMascota.get('fechaNacimiento')?.value || '',
-        tipo: this.nuevaMascota.get('tipo')?.value || '',
-        raza: this.nuevaMascota.get('raza')?.value || '',
+        nombre: this.nuevaMascota.get('nombre')!.value || '',
+        fecha_nacimiento: this.nuevaMascota.get('fechaNacimiento')!.value || '',
+        tipo: this.nuevaMascota.get('tipo')!.value || '',
+        raza: this.nuevaMascota.get('raza')!.value || '',
         foto: savedImageFile.filepath, // Guardamos el filepath en Firebase
         citas: [],
       };
