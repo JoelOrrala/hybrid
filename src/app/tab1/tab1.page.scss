@@ -3,6 +3,13 @@ ion-content {
   padding: 16px;
 }
 
+.icono-pet {
+  width: 24px; 
+  height: 24px;
+  margin-right: 8px; /* Espacio entre la imagen y el texto */
+  vertical-align: middle; /* Alinea verticalmente la imagen con el texto */
+}
+
 ion-card {
   --background: #a2d9ce;
   color: #ffffff;

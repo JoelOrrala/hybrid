@@ -1,6 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>PetCare</ion-title>
+    <ion-title>
+      <img src="assets/icon/pet_icon.png" alt="Pet Icon" class="icono-pet" />
+      PetCitas</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -46,12 +48,7 @@
                 <h2>{{ mascota.nombre }}</h2>
                 <p>{{ cita.fecha }} - {{ cita.hora }}</p>
               </ion-label>
-              <ion-button
-                fill="outline"
-                slot="end"
-                (click)="navigateToDetails(cita)"
-                >Ver detalles</ion-button
-              >
+              <ion-button fill="outline" slot="end" (click)="navigateToDetails(cita, mascota)">Ver detalles</ion-button>
             </ion-item>
           </ng-container>
         </ng-container>

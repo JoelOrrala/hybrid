@@ -11,12 +11,40 @@
     </ion-toolbar>
   </ion-header>
 
-  <div *ngIf="cita">
-    <h2>{{ cita.fecha }}</h2>
-    <p>{{ cita.hora }}</p>
-    <p>{{ cita.motivo }}</p>
-    <p>{{ cita.lugar }}</p>
-    <p>{{ cita.veterinario }}</p>
+  <div *ngIf="cita && mascota">
+    <table class="cita-table">
+      <tr>
+        <th>Fecha</th>
+        <td>{{ cita.fecha }}</td>
+      </tr>
+      <tr>
+        <th>Hora</th>
+        <td>{{ cita.hora }}</td>
+      </tr>
+      <tr>
+        <th>Motivo</th>
+        <td>{{ cita.motivo }}</td>
+      </tr>
+      <tr>
+        <th>Lugar</th>
+        <td>{{ cita.lugar }}</td>
+      </tr>
+      <tr>
+        <th>Veterinario</th>
+        <td>{{ cita.veterinario }}</td>
+      </tr>
+    </table>
+
+    <div class="mascota-info">
+      <ion-avatar class="mascota-avatar">
+        <img [src]="mascota.foto" />
+      </ion-avatar>
+      <div class="mascota-details">
+        <h3>{{ mascota.nombre }}</h3>
+        <p><strong>Tipo:</strong> {{ mascota.tipo }}</p>
+        <p><strong>Raza:</strong> {{ mascota.raza }}</p>
+      </div>
+    </div>
   </div>
 
 </ion-content>

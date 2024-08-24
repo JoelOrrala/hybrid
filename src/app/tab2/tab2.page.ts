@@ -6,10 +6,12 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
+  IonAvatar,
   IonButton,
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { Cita } from '../interfaces/cita';
+import { Mascota } from '../interfaces/mascota';
 
 @Component({
   selector: 'app-tab2',
@@ -21,6 +23,7 @@ import { Cita } from '../interfaces/cita';
     IonToolbar,
     IonTitle,
     IonContent,
+    IonAvatar,
     ExploreContainerComponent,
     IonButton,
     CommonModule,
@@ -28,12 +31,14 @@ import { Cita } from '../interfaces/cita';
 })
 export class Tab2Page implements OnInit {
   cita: Cita | null = null;
+  mascota: Mascota | null = null;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.cita = JSON.parse(params['cita']);
+      this.mascota = JSON.parse(params['mascota']);
     });
   }
 }
