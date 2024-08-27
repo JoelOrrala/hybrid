@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProviderService } from '../services/provider.service';
 import { PhotoService } from '../services/photo.service';
 import { Mascota } from '../interfaces/mascota';
+import { Cita } from '../interfaces/cita';
 
 @Component({
   selector: 'app-tab4',
@@ -134,14 +135,37 @@ export class Tab4Page implements OnInit {
     if (this.formularioCitas.controls['fecha'].valueChanges) {
       this.setDateTime(this.formularioCitas.controls['fecha']!.value);
     }
+
     if (this.formularioCitas.valid) {
-      console.log('Form Submitted!', this.formularioCitas.value);
+      const nombreMascota = this.formularioCitas.controls['mascota']!.value.nombre || '';
+      const tipoMascota = this.formularioCitas.controls['mascota']!.value.tipo || '';
+      const mascotaActualizada = this.mascotas.find(mascota => mascota.nombre === nombreMascota && mascota.tipo === tipoMascota);
+
+      if (mascotaActualizada === undefined) {
+        this.invalidPetAlert();
+      } else {
+        const nuevaCita: Cita = {
+          fecha: this.formularioCitas.get('fecha')!.value || '',
+          hora: this.formularioCitas.get('hora')!.value || '',
+          lugar: this.formularioCitas.get('lugar')!.value || '',
+          motivo: this.formularioCitas.get('motivo')!.value || '',
+          veterinario: this.formularioCitas.get('veterinario')!.value || '',
+        };
+
+        mascotaActualizada.citas.push(nuevaCita);
+
+        this.dataProvider.putResponse(this.mascotas.indexOf(mascotaActualizada), mascotaActualizada).subscribe((response) => {
+          this.loadMascotas();
+          this.presentAlert();
+          this.formularioCitas.reset();
+          this.setDefaults();
+        });
+        console.log('Formulario enviado!', this.formularioCitas.value);
+      }
+
     } else {
-      console.log('Form is invalid');
+      console.log('Formulario inválido');
     }
-    this.presentAlert();
-    this.formularioCitas.reset();
-    this.setDefaults();
   }
 
   /* Alerta */
@@ -152,6 +176,16 @@ export class Tab4Page implements OnInit {
     const alert = await this.alertController.create({
       header: 'Cita agendada con éxito',
       message: 'Cita para '+ nombre,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async invalidPetAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Mascota no seleccionada',
       buttons: ['OK'],
     });
 

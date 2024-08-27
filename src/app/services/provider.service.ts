@@ -23,4 +23,8 @@ export class ProviderService {
   postResponse(data: any) {
     return this.http.post(this.URL, data);
   }
+
+  putResponse(position: number, updatedData: any) {
+    return this.http.put(`${this.URL}/${position}`, updatedData);
+  }
 }
