@@ -33,33 +33,45 @@
 
         <form [formGroup]="formularioCitas" (ngSubmit)="onSubmit()">
 
-          <ion-item>
-            <ion-label position="floating">Mascota</ion-label>
-            <ion-select fromControlName="mascota" *ngIf="mascotas.length > 0">
-              <ion-select-option *ngFor="let mascota of mascotas" [value]="mascota">{{ mascota.nombre }} - {{mascota.fecha_nacimiento }}</ion-select-option>
-            </ion-select>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Motivo</ion-label><br>
-            <ion-input formControlName="motivo"></ion-input>
-            <ion-label position="floating" *ngIf="formularioCitas.controls['motivo'].touched && formularioCitas.controls['motivo'].invalid">Requerido</ion-label><br><br>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Fecha y Hora</ion-label><br><br>
-            <ion-datetime displayFormat="MM/DD/YYYYHH:mm" pickerFormat="MM/DD/YYYYHH:mm" [preferWheel]="true" formControlName="fecha"></ion-datetime>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Lugar</ion-label><br>
-            <ion-input formControlName="lugar"></ion-input>
-            <ion-label position="floating" *ngIf="formularioCitas.controls['lugar'].touched && formularioCitas.controls['lugar'].invalid">Requerido</ion-label><br><br>
-          </ion-item>
-          <ion-item>
-            <ion-label position="floating">Veterinario</ion-label><br>
-            <ion-input formControlName="veterinario"></ion-input>
-            <ion-label position="floating" *ngIf="formularioCitas.controls['veterinario'].touched && formularioCitas.controls['veterinario'].invalid">Requerido</ion-label><br><br>
-          </ion-item>
+          <ion-card>
+            <ion-item>
+              <ion-label position="floating">Mascota</ion-label>
+              <ion-select aria-label="mascotas" placeholder="Selecciona una mascota" [(ngModel)]="formularioCitas.controls['mascota'].value" [ngModelOptions]="{standalone: true}">
+                <ion-select-option *ngFor="let mascota of mascotas" [value]="mascota">{{ mascota.nombre }} - {{ mascota.tipo }}</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-label position="floating">Motivo</ion-label><br>
+              <ion-input formControlName="motivo"></ion-input>
+              <ion-label position="floating" *ngIf="formularioCitas.controls['motivo'].touched && formularioCitas.controls['motivo'].invalid">Requerido</ion-label><br><br>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-datetime displayFormat="MM/DD/YYYYHH:mm" pickerFormat="MM/DD/YYYYHH:mm" [preferWheel]="true" formControlName="fecha" [min]="defaultDate">
+                <span slot="title" color="gray">Fecha y Hora</span>
+                <ion-label position="floating" *ngIf="formularioCitas.controls['fecha'].touched && formularioCitas.controls['fecha'].invalid">Requerido</ion-label><br><br>
+              </ion-datetime>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-label position="floating">Lugar</ion-label><br>
+              <ion-input formControlName="lugar"></ion-input>
+              <ion-label position="floating" *ngIf="formularioCitas.controls['lugar'].touched && formularioCitas.controls['lugar'].invalid">Requerido</ion-label><br><br>
+            </ion-item>
+          </ion-card>
+          <ion-card>
+            <ion-item>
+              <ion-label position="floating">Veterinario</ion-label><br>
+              <ion-input formControlName="veterinario"></ion-input>
+              <ion-label position="floating" *ngIf="formularioCitas.controls['veterinario'].touched && formularioCitas.controls['veterinario'].invalid">Requerido</ion-label><br><br>
+            </ion-item>
+          </ion-card>
 
-          <ion-button expand="full" type="submit" [disabled]="formularioCitas.invalid">Agendar Cita</ion-button>
+          <ion-button id="formularioEnviado" expand="full" type="submit" [disabled]="formularioCitas.invalid" (click)="modal.dismiss()">Agendar Cita</ion-button>
 
         </form>
 

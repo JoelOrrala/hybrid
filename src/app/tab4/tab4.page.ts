@@ -1,24 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonImg, IonInput, IonDatetime, IonSelect, IonSelectOption } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonImg, IonInput, IonDatetime, IonSelect, IonSelectOption, IonNote, IonCard, IonAlert } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline, trashOutline } from 'ionicons/icons';
-import { AnimationController } from '@ionic/angular';
+import { AnimationController, AlertController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular/standalone';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { addDays, format } from 'date-fns';
 import { HttpClientModule } from '@angular/common/http';
 import { ProviderService } from '../services/provider.service';
 import { PhotoService } from '../services/photo.service';
 import { Mascota } from '../interfaces/mascota';
-import { Cita } from '../interfaces/cita';
 
 @Component({
   selector: 'app-tab4',
   templateUrl: './tab4.page.html',
   styleUrls: ['./tab4.page.scss'],
   standalone: true,
-  imports: [HttpClientModule, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonModal, IonImg, IonInput, IonDatetime, IonSelect, ReactiveFormsModule, IonSelectOption],
+  imports: [ FormsModule, HttpClientModule, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonButtons, IonButton, IonIcon, IonList, IonItem, IonLabel, IonAvatar, IonModal, IonImg, IonInput, IonDatetime, IonSelect, ReactiveFormsModule, IonSelectOption, IonNote, IonCard, IonAlert ],
   providers: [ProviderService],
 })
 export class Tab4Page implements OnInit {
@@ -31,15 +30,17 @@ export class Tab4Page implements OnInit {
   formularioCitas: FormGroup;
   defaultDate: string;
   defaultTime: string;
+  defaultMascota: string = 'Mascota';
   public mascotas: Mascota[] = [];
 
-  constructor(private animationCtrl: AnimationController, private fb: FormBuilder, private dataProvider: ProviderService, private photoService: PhotoService,) {
+  constructor(private animationCtrl: AnimationController, private fb: FormBuilder, private dataProvider: ProviderService, private photoService: PhotoService, private alertController: AlertController) {
+    this.loadMascotas();
     addIcons({ addOutline, trashOutline });
 
     const now = new Date();
     const tomorrow = addDays(now, 1);
-    this.defaultDate = format(tomorrow, 'dd/MM/yyyy');
-    this.defaultTime = format(now, 'HH:mm');
+    this.defaultDate = now.toISOString();
+    this.defaultTime = tomorrow.toISOString();
 
     this.formularioCitas= this.fb.group({
       motivo: ['', [Validators.required]],
@@ -47,7 +48,7 @@ export class Tab4Page implements OnInit {
       veterinario: ['', [Validators.required]],
       fecha: [this.defaultDate],
       hora: [this.defaultTime],
-      mascota: [''],
+      mascota: [this.defaultMascota],
     });
 
     this.formularioCitas.get('fecha')!.valueChanges.subscribe(value => {
@@ -55,25 +56,26 @@ export class Tab4Page implements OnInit {
         this.formularioCitas.get('fecha')!.markAsTouched();
       }
     });
-
-    this.loadMascotas();
   }
 
   loadMascotas() {
     this.dataProvider.getResponse().subscribe(async (response) => {
       if (response != null) {
         this.mascotas = Object.values(response) as Mascota[];
-
-        for (const mascota of this.mascotas) {
-          if (mascota.citas && Array.isArray(mascota.citas)) {
-            mascota.citas.sort((a: Cita, b: Cita) => {
-              const dateA = new Date(a.fecha).getTime();
-              const dateB = new Date(b.fecha).getTime();
-              return dateA - dateB;
-            });
-          }
-        }
       }
+    });
+  }
+
+  setDefaults() {
+    const now = new Date();
+    const tomorrow = addDays(now, 1);
+    this.defaultDate = now.toISOString();
+    this.defaultTime = tomorrow.toISOString();
+
+    this.formularioCitas.patchValue({
+      fecha: this.defaultDate,
+      hora: this.defaultTime,
+      mascota: this.defaultMascota,
     });
   }
 
@@ -82,8 +84,8 @@ export class Tab4Page implements OnInit {
     const localTime = time.split('Z')[0];
 
     this.formularioCitas.patchValue({
-      date: date,
-      time: localTime,
+      fecha: date,
+      hora: localTime,
     });
   }
 
@@ -127,16 +129,32 @@ export class Tab4Page implements OnInit {
     return this.enterAnimation(baseEl).direction('reverse');
   };
 
-  /* Form submission*/
+  /* Form submission */
   onSubmit() {
     if (this.formularioCitas.controls['fecha'].valueChanges) {
-      this.setDateTime(this.formularioCitas.get('fecha')!.value || '');
+      this.setDateTime(this.formularioCitas.controls['fecha']!.value);
     }
     if (this.formularioCitas.valid) {
       console.log('Form Submitted!', this.formularioCitas.value);
     } else {
       console.log('Form is invalid');
     }
+    this.presentAlert();
     this.formularioCitas.reset();
+    this.setDefaults();
+  }
+
+  /* Alerta */
+  async presentAlert() {
+    const nombreMascota = this.formularioCitas.controls['mascota']!.value.nombre;
+    const nombre =  nombreMascota === undefined ? this.defaultMascota : nombreMascota;
+
+    const alert = await this.alertController.create({
+      header: 'Cita agendada con éxito',
+      message: 'Cita para '+ nombre,
+      buttons: ['OK'],
+    });
+
+    await alert.present();
   }
 }
