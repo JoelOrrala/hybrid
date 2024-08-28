@@ -1,7 +1,20 @@
+ion-content {
+  --background: #e8f8f5;
+  padding: 16px;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --background: #45b39d;
+  --color: #ffffff;
+}
+
 ion-datetime {
-    --padding-start: 0.5rem;
-    /* Padding for datetime picker */
-    --padding-end: 0.5rem;
-    display: block;
-    margin: 0 auto; /* Center within the parent container */
+  --padding-start: 0.5rem;
+  /* Padding for datetime picker */
+  --padding-end: 0.5rem;
+  display: block;
+  margin: 0 auto; /* Center within the parent container */
 }

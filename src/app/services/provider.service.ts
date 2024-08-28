@@ -11,6 +11,9 @@ export class ProviderService {
   private URL: string =
     'https://hybrid-e5bea-default-rtdb.firebaseio.com/collection/mascotas.json';
 
+  private URL2: string =
+    'https://hybrid-e5bea-default-rtdb.firebaseio.com/collection/mascotas';
+
   /* 3. Inyección de dependencia del HttpClient */
   constructor(private http: HttpClient) {}
 
@@ -24,7 +27,7 @@ export class ProviderService {
     return this.http.post(this.URL, data);
   }
 
-  putResponse(position: number, updatedData: any) {
-    return this.http.put(`${this.URL}/${position}`, updatedData);
+  putResponse(key: string, updatedData: any) {
+    return this.http.put(`${this.URL2}/${key}.json`, updatedData);
   }
 }

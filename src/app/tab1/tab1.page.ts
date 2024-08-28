@@ -107,7 +107,10 @@ export class Tab1Page {
   }
 
   navigateToDetails(cita: Cita, mascota: Mascota) {
-    this.router.navigate(['/tabs/tab2', { cita: JSON.stringify(cita), mascota: JSON.stringify(mascota) }]);
+    this.router.navigate([
+      '/tabs/tab2',
+      { cita: JSON.stringify(cita), mascota: JSON.stringify(mascota) },
+    ]);
   }
 
   nuevaMascota = this.fb.group({
