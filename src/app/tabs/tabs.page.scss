@@ -1,1 +1,8 @@
-
+ion-tab-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    --background: #45b39d;
+    --color: #e8f8f5;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+}

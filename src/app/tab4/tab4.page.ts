@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   IonContent,
@@ -20,6 +20,10 @@ import {
   IonNote,
   IonCard,
   IonAlert,
+  IonGrid,
+  IonCol,
+  IonRow,
+  IonThumbnail,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline, trashOutline } from 'ionicons/icons';
@@ -38,7 +42,12 @@ import { ProviderService } from '../services/provider.service';
 import { PhotoService } from '../services/photo.service';
 import { Mascota } from '../interfaces/mascota';
 import { Cita } from '../interfaces/cita';
+import { dogImg } from '../interfaces/dog-img';
 import { MascotaConClave } from '../interfaces/mascota-con-clave';
+import { register } from 'swiper/element/bundle';
+import { Router } from '@angular/router';
+
+register();
 
 @Component({
   selector: 'app-tab4',
@@ -70,8 +79,13 @@ import { MascotaConClave } from '../interfaces/mascota-con-clave';
     IonNote,
     IonCard,
     IonAlert,
+    IonGrid,
+    IonCol,
+    IonRow,
+    IonThumbnail
   ],
   providers: [ProviderService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Tab4Page implements OnInit {
   appointments = [
@@ -85,6 +99,10 @@ export class Tab4Page implements OnInit {
     },
   ];
 
+  dogs:dogImg[] = []
+  dogImgs:string[] = []
+  dogNames:string[] = []
+
   formularioCitas: FormGroup;
   defaultDate: string;
   defaultTime: string;
@@ -97,8 +115,10 @@ export class Tab4Page implements OnInit {
     private fb: FormBuilder,
     private dataProvider: ProviderService,
     private photoService: PhotoService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private router: Router,
   ) {
+    this.fetchDogData();
     this.loadMascotas();
     addIcons({ addOutline, trashOutline });
 
@@ -133,6 +153,10 @@ export class Tab4Page implements OnInit {
         })) as MascotaConClave[];
       }
     });
+  }
+
+  navigateToCitas() {
+    this.router.navigate([ '/tabs/tab1' ]);
   }
 
   setDefaults() {
@@ -270,5 +294,59 @@ export class Tab4Page implements OnInit {
     });
 
     await alert.present();
+  }
+
+  // Function to fetch JSON data from the The Dog API
+  async fetchDogData() {
+    try {
+
+      // URL of the API endpoint
+      const apiUrl = 'https://api.thedogapi.com/v1/images/search?size=med&mime_types=jpg&format=json&order=RANDOM&page=0&limit=10';
+      const response = await fetch(apiUrl); // Make the fetch request
+
+      const dogUrl = 'https://dogapi.dog/api/v2/breeds'
+      const ndResponse = await fetch(dogUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`); // Check if the response status is OK (status code 200-299)
+      }
+      if (!ndResponse.ok) {
+        throw new Error(`HTTP error! status: ${ndResponse.status}`);
+      }
+      
+      
+      const presentation1:any = await fetch('https://api.thedogapi.com/v1/images/VyBXzOjjR');
+      this.setDog(await presentation1.json());
+      const presentation2:any = await fetch('https://api.thedogapi.com/v1/images/38KoA9gGB');
+      this.setDog(await presentation2.json());
+      const presentation3:any = await fetch('https://api.thedogapi.com/v1/images/PJvRHYfs1');
+      this.setDog(await presentation3.json());
+
+      // Parse the JSON data
+      const data:any[] = await response.json();
+      const ndData = await ndResponse.json();
+      const ndDataArray:any[] = ndData.data;
+
+      console.log(response);
+
+      // Se añade imagen al arreglo
+      data.forEach((item) => {
+        this.dogImgs.push(item.url);
+      });
+
+      ndDataArray.forEach((item) => {
+        this.dogNames.push(item.attributes.name);
+      });
+    } catch (error) {
+      // Manejo de errores
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  setDog(response:any) {
+    const dogImg:dogImg = {
+      url:response.url,
+      nombre:response.breeds[0].name,
+    };
+    this.dogs.push(dogImg);
   }
 }

@@ -12,7 +12,7 @@ import {
   square,
   peopleCircle,
   albums,
-  addOutline,
+  homeOutline,
 } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
@@ -27,6 +27,6 @@ export class TabsPage {
   public environmentInjector = inject(EnvironmentInjector);
 
   constructor() {
-    addIcons({ triangle, ellipse, square, peopleCircle, albums, addOutline });
+    addIcons({ triangle, ellipse, square, peopleCircle, albums, homeOutline });
   }
 }

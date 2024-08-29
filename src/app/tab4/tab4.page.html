@@ -1,11 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Citas</ion-title>
+    <ion-title>PetCare</ion-title>
     <ion-buttons slot="end">
-      <ion-button id="open-modal1" expand="block">
-        <ion-icon name="add-outline"></ion-icon>
-        Agregar
-      </ion-button>
       <ion-button
         (click)="deleteSelectedAppointments()"
         [disabled]="!hasSelectedAppointments()"
@@ -17,6 +13,81 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
+
+  <swiper-container
+    class="banners"
+    [initialSlide]="2"
+    [slidesPerView]="2.4"
+    [spaceBetween]="1"
+    [loop]="true"
+    [centeredSlides]="true"
+    >
+    <swiper-slide *ngFor="let dog of dogs">
+      <ion-card>
+        <img [src]="dog.url" alt="A dog">
+        <p>{{dog.nombre}}</p>
+      </ion-card>
+    </swiper-slide>
+    <swiper-slide *ngFor="let img of dogImgs">
+      <ion-card>
+        <img [src]="img" alt="A dog">
+        <p>{{dogNames[dogImgs.indexOf(img)]}}</p>
+      </ion-card>
+    </swiper-slide>
+  </swiper-container>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-thumbnail>
+            <img src="https://www.svgrepo.com/show/495577/pet.svg" alt="pet">
+          </ion-thumbnail>
+          <p class="short-text">Agrega a tu mascota a la lista de mascotas fácilmente. Solo haz clic en el botón "Agregar Mascota".</p>
+          <h2 class="long-text">Agregar una Mascota a la Lista de Mascotas</h2>
+          <ul class="long-text">
+            <li><strong>Proceso Sencillo:</strong> Agregar una mascota a tu lista es fácil y directo.</li>
+            <li><strong>Botón Agregar Mascota:</strong> Haz clic en el botón "Agregar Mascota" para abrir un formulario.</li>
+            <li><strong>Ingreso de Detalles:</strong> Introduce el nombre, raza, edad y notas especiales de tu mascota.</li>
+            <li><strong>Subida de Foto:</strong> Sube una foto para completar el perfil de tu mascota.</li>
+            <li><strong>Almacenamiento Seguro:</strong> La información se guarda de manera segura y es accesible en cualquier momento.</li>
+            <li><strong>Detalles Personalizados:</strong> Añade registros de vacunación y preferencias dietéticas.</li>
+            <li><strong>Rápido e Intuitivo:</strong> El proceso está diseñado para ser rápido y fácil.</li>
+            <li><strong>Gestión Organizada:</strong> Mantiene toda la información de tu mascota organizada en un solo lugar.</li>
+          </ul>
+          <ion-button (click)="navigateToCitas()">
+            <ion-icon name="add-outline"></ion-icon>
+            Agregar
+          </ion-button>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-thumbnail>
+            <img src="https://www.svgrepo.com/show/442056/appointment-new-symbolic.svg" alt="appointment">
+          </ion-thumbnail>
+          <p class="short-text">Programa una cita para tu mascota en segundos. Elige la fecha y hora que mejor te convenga.</p>
+          <h2 class="long-text">Reservar una Cita para Tu Mascota</h2>
+          <ul class="long-text">
+            <li><strong>Rápido y Simple:</strong> Reservar una cita es rápido y se ajusta a tu agenda.</li>
+            <li><strong>Seleccionar Tipo de Cita:</strong> Elige entre chequeos de rutina, peluquería o visitas especializadas.</li>
+            <li><strong>Fecha y Hora:</strong> Escoge una fecha y hora conveniente para la cita.</li>
+            <li><strong>Proveedor Preferido:</strong> Opción para seleccionar tu veterinario o proveedor de servicios preferido.</li>
+            <li><strong>Ahorro de Tiempo:</strong> El proceso simplificado ahorra tiempo y facilita la gestión del cuidado.</li>
+            <li><strong>Recordatorios y Notificaciones:</strong> Recibe recordatorios para no perderte ninguna cita.</li>
+            <li><strong>Vista de Calendario:</strong> Administra todas las citas próximas en una vista de calendario dedicada.</li>
+            <li><strong>Reprogramación Fácil:</strong> Simple para reprogramar o cancelar si cambian los planes.</li>
+          </ul>
+          <ion-button id="open-modal1" expand="block">
+            <ion-icon name="add-outline"></ion-icon>
+            Agendar
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+
   <ion-modal
     #modal
     trigger="open-modal1"

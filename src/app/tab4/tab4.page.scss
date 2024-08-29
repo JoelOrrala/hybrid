@@ -18,3 +18,124 @@ ion-datetime {
   display: block;
   margin: 0 auto; /* Center within the parent container */
 }
+
+ion-content {
+  .banners {
+      ion-card {
+          border-radius: 10px;
+          height: auto;
+          max-height: 300px;
+          text-align: center;
+          img {
+              max-width: 100%;  // Ensures the image doesn't exceed its container's width
+              height: auto;     // Maintains the aspect ratio by adjusting height automatically
+              margin: 0;
+              padding: 0;
+          }
+          p {
+              padding: 0.1rem;
+              color: black;
+          }
+      }
+      
+  }
+}
+
+swiper-container {
+  display: flex;
+  align-items: center; /* Center the slides vertically */
+  
+  swiper-wrapper {
+    display: flex;
+    flex-direction: row; /* Ensure slides are side by side */
+    align-items: center; /* Align slides vertically within the Swiper container */
+  }
+
+  swiper-slide {
+    display: flex;
+    align-items: center; /* Center the content inside each slide */
+    justify-content: center; /* Center the content horizontally if needed */
+    height: auto; /* Ensure the slide height adapts to the content */
+  }
+}
+
+ion-card {
+  --background: #a2d9ce;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+ion-grid {
+  @media (min-width:768px) {
+    margin-top: 20px;
+  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: auto;
+  max-height: max-content;
+  margin: 2vh, 10px, 0, 5px;
+  ion-row {
+    ion-col {
+      width: auto;
+      max-width: 600px;
+      padding: 0 !important;
+      @media (min-width: 768px) {
+        padding: 0 20px;
+      }
+      display: flex;
+      align-items: stretch;
+      ion-card {
+        padding: 15px;
+        @media (min-width: 768px) {
+          padding: 20px;
+        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        ion-button {
+          --background: #45b39d;
+        }
+        ion-label {
+          margin-top:  5px;
+          --background: #1e8670;
+        }
+        ion-thumbnail {
+          margin-top:  5px;
+        }
+        p {
+          padding: 6px;
+          text-align: justify;
+          color: black;
+        }
+        .short-text {
+          display: block; /* Show short text by default */
+        }
+      
+        .long-text {
+          display: none; /* Hide long text by default */
+        }
+      
+        @media (min-width: 768px) { /* Adjust this breakpoint as needed */
+          .short-text {
+            display: none; /* Hide short text on larger screens */
+          }
+      
+          .long-text {
+            display: block; /* Show long text on larger screens */
+          }
+        }
+      }
+    }
+  }
+}
+
+ul {
+  list-style-type: none;
+  color: black;
+  padding: 0;
+
+  li {
+    margin-bottom: 10px; /* Adjust the spacing between list items */
+  }
+}
