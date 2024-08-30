@@ -1,18 +1,12 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>PetCare</ion-title>
-    <ion-buttons slot="end">
-      <ion-button
-        (click)="deleteSelectedAppointments()"
-        [disabled]="!hasSelectedAppointments()"
-      >
-        <ion-icon name="trash-outline"></ion-icon>
-        Eliminar
-      </ion-button>
-    </ion-buttons>
+    <ion-title>
+      <img src="assets/icon/pet_icon.png" alt="Pet Icon" class="icono-pet" />
+      PetCitas
+    </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content [fullscreen]="true">
 
   <swiper-container
     class="banners"
@@ -81,6 +75,63 @@
           <ion-button id="open-modal1" expand="block">
             <ion-icon name="add-outline"></ion-icon>
             Agendar
+          </ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card>
+          <ion-thumbnail>
+            <img src="https://www.svgrepo.com/show/502608/delete-2.svg" alt="deletion">
+          </ion-thumbnail>
+          <p class="short-text">Elimina fácilmente una cita del horario de tu mascota. El listado se actualizará automáticamente.</p>
+          <h2 class="long-text">Eliminar una Cita</h2>
+          <ul class="long-text">
+            <li><strong>Acceso Fácil:</strong> Localiza la cita que deseas eliminar del horario de tu mascota.</li>
+            <li><strong>Paso de Confirmación:</strong> Aparecerá un mensaje de confirmación para evitar eliminaciones accidentales.</li>
+            <li><strong>Eliminación Inmediata:</strong> Una vez confirmada, la cita se elimina instantáneamente del horario.</li>
+            <li><strong>Actualización de Notificaciones:</strong> Las notificaciones relacionadas con la cita se cancelan automáticamente.</li>
+            <li><strong>Sincronización del Calendario:</strong> La vista del calendario se actualiza automáticamente, reflejando el cambio.</li>
+            <li><strong>Opción de Deshacer:</strong> Una opción de deshacer está disponible por un breve período en caso de errores.</li>
+          </ul>
+          <ion-button
+          (click)="deleteSelectedAppointments()"
+          [disabled]="!hasSelectedAppointments()"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+          Eliminar
+        </ion-button>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card>
+          <ion-thumbnail>
+            <img src="https://www.svgrepo.com/show/272773/route-start.svg" alt="soon">
+          </ion-thumbnail>
+          <p class="short-text">Pronto podrás rastrear las actividades de tu mascota y configurar notificaciones personalizadas.</p>
+          <h2 class="long-text">Próximas Funcionalidades a Implementar</h2>
+          <div class="long-text, cards">
+            <ion-card class="long-text">
+              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+              <p>{{soonDog.nombre}}</p>
+            </ion-card>
+            <ion-card class="long-text">
+              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+              <p>{{soonDog.nombre}}</p>
+            </ion-card>
+            <ion-card class="long-text">
+              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+              <p>{{soonDog.nombre}}</p>
+            </ion-card>
+            <ion-card class="long-text">
+              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+              <p>{{soonDog.nombre}}</p>
+            </ion-card>
+          </div>
+          <ion-button>
+            <ion-icon name="add-outline"></ion-icon>
+            Soon
           </ion-button>
         </ion-card>
       </ion-col>

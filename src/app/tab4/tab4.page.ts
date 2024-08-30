@@ -102,6 +102,7 @@ export class Tab4Page implements OnInit {
   dogs:dogImg[] = []
   dogImgs:string[] = []
   dogNames:string[] = []
+  soonDog:dogImg = {url: '', nombre: '',}
 
   formularioCitas: FormGroup;
   defaultDate: string;
@@ -320,6 +321,9 @@ export class Tab4Page implements OnInit {
       this.setDog(await presentation2.json());
       const presentation3:any = await fetch('https://api.thedogapi.com/v1/images/PJvRHYfs1');
       this.setDog(await presentation3.json());
+
+      var randomAnswer = Math.floor(Math.random() * 2);
+      this.soonDog = this.dogs[randomAnswer];
 
       // Parse the JSON data
       const data:any[] = await response.json();
