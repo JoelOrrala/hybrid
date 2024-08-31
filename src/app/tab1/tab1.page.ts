@@ -73,7 +73,11 @@ export class Tab1Page {
   ) {}
 
   ngOnInit() {
-    this.loadData();
+    // this.loadData();
+  }
+
+  ionViewWillEnter() {
+    this.loadData(); // Para cuando se elimina una cita y se tiene que ver en detalles
   }
 
   loadData() {

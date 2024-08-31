@@ -95,13 +95,10 @@
             <li><strong>Sincronización del Calendario:</strong> La vista del calendario se actualiza automáticamente, reflejando el cambio.</li>
             <li><strong>Opción de Deshacer:</strong> Una opción de deshacer está disponible por un breve período en caso de errores.</li>
           </ul>
-          <ion-button
-          (click)="deleteSelectedAppointments()"
-          [disabled]="!hasSelectedAppointments()"
-        >
-          <ion-icon name="trash-outline"></ion-icon>
-          Eliminar
-        </ion-button>
+          <ion-button id="open-modal2" expand="block">
+            <ion-icon name="trash-outline"></ion-icon>
+            Eliminar
+          </ion-button>
         </ion-card>
       </ion-col>
       <ion-col>
@@ -237,4 +234,68 @@
       </ion-content>
     </ng-template>
   </ion-modal>
+
+  <ion-modal
+  #modal2
+  trigger="open-modal2"
+  [enterAnimation]="enterAnimation"
+  [leaveAnimation]="leaveAnimation"
+>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Eliminar Cita</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="modal2.dismiss()">Close</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <form [formGroup]="eliminarCita" (ngSubmit)="deleteAppointment()">
+        <ion-card>
+          <ion-item *ngIf="!loading">
+            <ion-label position="floating">Mascota</ion-label>
+            <ion-select
+              aria-label="mascotas"
+              placeholder="Selecciona una mascota"
+              [(ngModel)]="eliminarCita.controls['mascota'].value"
+              [ngModelOptions]="{standalone: true}"
+              (ionChange)="onPetChange($event)"
+            >
+              <ion-select-option
+                *ngFor="let mascota of mascotas"
+                [value]="mascota"
+                >{{ mascota.nombre }}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="loading">
+            <ion-label>Cargando Mascotas...</ion-label>
+          </ion-item>
+        </ion-card>
+        <div *ngIf="mascotaSeleccionada.citas && mascotaSeleccionada.citas.length > 0">
+          <ion-radio-group formControlName="cita">
+            <ion-list>
+              <ion-item *ngFor="let cita of mascotaSeleccionada.citas">
+                <ion-radio [value]="cita"></ion-radio>
+                <ion-label>
+                  <h2>{{ cita.fecha }}</h2>
+                  <p>{{ cita.motivo }}</p>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-radio-group>
+      </div>
+        <ion-button
+          id="formularioEnviado1"
+          expand="full"
+          type="submit"
+          [disabled]="eliminarCita.invalid"
+          (click)="modal2.dismiss()"
+          >Eliminar Cita</ion-button
+        >
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>
 </ion-content>

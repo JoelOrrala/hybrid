@@ -24,6 +24,8 @@ import {
   IonCol,
   IonRow,
   IonThumbnail,
+  IonRadioGroup,
+  IonRadio,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline, trashOutline } from 'ionicons/icons';
@@ -46,6 +48,7 @@ import { dogImg } from '../interfaces/dog-img';
 import { MascotaConClave } from '../interfaces/mascota-con-clave';
 import { register } from 'swiper/element/bundle';
 import { Router } from '@angular/router';
+import { Tab1Page } from '../tab1/tab1.page';
 
 register();
 
@@ -82,7 +85,9 @@ register();
     IonGrid,
     IonCol,
     IonRow,
-    IonThumbnail
+    IonThumbnail,
+    IonRadioGroup,
+    IonRadio,
   ],
   providers: [ProviderService],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -105,11 +110,15 @@ export class Tab4Page implements OnInit {
   soonDog:dogImg = {url: '', nombre: '',}
 
   formularioCitas: FormGroup;
+  eliminarCita: FormGroup;
   defaultDate: string;
   defaultTime: string;
   defaultMascota: string = 'Mascota';
-  public mascotas: Mascota[] = [];
+  public mascotas: MascotaConClave[] = [];
   private mascotaKeys: { [nombre: string]: string } = {};
+
+  loading:boolean = true;
+  mascotaSeleccionada:MascotaConClave = {key: '', nombre: '', fecha_nacimiento: '', raza: '', foto: '', citas: [], tipo: ''};
 
   constructor(
     private animationCtrl: AnimationController,
@@ -119,8 +128,6 @@ export class Tab4Page implements OnInit {
     private alertController: AlertController,
     private router: Router,
   ) {
-    this.fetchDogData();
-    this.loadMascotas();
     addIcons({ addOutline, trashOutline });
 
     const now = new Date();
@@ -137,11 +144,21 @@ export class Tab4Page implements OnInit {
       mascota: [this.defaultMascota],
     });
 
+    this.eliminarCita = this.fb.group({
+      mascota: [this.defaultMascota],
+      cita: [''],
+    });
+
     this.formularioCitas.get('fecha')!.valueChanges.subscribe((value) => {
       if (value !== this.defaultDate) {
         this.formularioCitas.get('fecha')!.markAsTouched();
       }
     });
+  }
+
+  ngOnInit() {
+    this.fetchDogData();
+    this.loadMascotas();
   }
 
   loadMascotas() {
@@ -153,6 +170,7 @@ export class Tab4Page implements OnInit {
           key,
         })) as MascotaConClave[];
       }
+      this.loading = false;
     });
   }
 
@@ -182,16 +200,6 @@ export class Tab4Page implements OnInit {
       hora: localTime,
     });
   }
-
-  hasSelectedAppointments() {
-    return this.appointments.some((app) => app.selected);
-  }
-
-  deleteSelectedAppointments() {
-    this.appointments = this.appointments.filter((app) => app.selected);
-  }
-
-  ngOnInit() {}
 
   /* Animated Modal */
   enterAnimation = (baseEl: HTMLElement) => {
@@ -271,7 +279,7 @@ export class Tab4Page implements OnInit {
     }
   }
 
-  /* Alerta */
+  /* Alertas */
   async presentAlert() {
     const nombreMascota =
       this.formularioCitas.controls['mascota']!.value.nombre;
@@ -291,6 +299,26 @@ export class Tab4Page implements OnInit {
     const alert = await this.alertController.create({
       header: 'Error',
       message: 'Mascota no seleccionada',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async invalidAppAlert() {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message: 'Cita no seleccionada',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
+
+  async deletedAppAlert() {
+    const alert = await this.alertController.create({
+      header: 'Éxito',
+      message: 'Cita Eliminada',
       buttons: ['OK'],
     });
 
@@ -352,5 +380,51 @@ export class Tab4Page implements OnInit {
       nombre:response.breeds[0].name,
     };
     this.dogs.push(dogImg);
+  }
+
+  /* Eliminar Cita */
+
+  onPetChange(event: any) {
+    const selectedPet:Mascota = event.detail.value;
+    this.mascotaSeleccionada = this.getPet(selectedPet.nombre);
+  }
+
+  getPet(nombreMascota: string): MascotaConClave {
+
+    const mascota = this.mascotas.find(
+      (mascota) => mascota.nombre === nombreMascota
+    ) as MascotaConClave | undefined;
+
+    if (mascota === undefined) {
+      this.invalidPetAlert();
+      throw("Mascota no encontrada");
+    } else {
+      return mascota;
+    }
+  }
+
+  deleteAppointment() {
+    const citaEliminada = this.eliminarCita.controls['cita'].value;
+    if (citaEliminada === '') {
+      this.invalidAppAlert();
+    } else {
+      this.mascotaSeleccionada.citas = this.mascotaSeleccionada.citas.filter(cita => cita !== citaEliminada);
+      if (this.mascotaSeleccionada.key) {
+        this.dataProvider
+          .putResponse(this.mascotaSeleccionada.key, this.mascotaSeleccionada)
+          .subscribe((response) => {
+            this.loadMascotas();
+            this.deletedAppAlert();
+            this.eliminarCita.reset();
+            this.setDefaultMascota();
+          });
+      } else {
+        console.log('No se encontró la clave de la mascota en Firebase');
+      }
+    }
+  }
+
+  setDefaultMascota() {
+    this.mascotaSeleccionada = {key: '', nombre: '', fecha_nacimiento: '', raza: '', foto: '', citas: [], tipo: ''};
   }
 }
