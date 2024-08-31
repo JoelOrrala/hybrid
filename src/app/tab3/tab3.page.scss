@@ -1,11 +1,38 @@
 .titulo {
-    color: var(--ion-color-primary);
-      font-weight: bold;
-      text-align: center;
-  }
- 
-  p#descripcion {
-    text-align: justify;
-  }
- 
- 
+  color: black;
+  font-weight: bold;
+  text-align: center;
+}
+
+p#descripcion {
+  text-align: justify;
+}
+
+ion-content {
+  --background: #e8f8f5;
+  padding: 16px;
+}
+
+ion-card {
+  --background: #a2d9ce;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+ion-card-title,
+ion-card-content {
+  color: black;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  --background: #45b39d;
+  --color: #ffffff;
+}
+
+ion-title {
+  text-align: center;
+  width: 100%;
+}
