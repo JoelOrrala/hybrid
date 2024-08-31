@@ -113,18 +113,20 @@
               <img [src]="soonDog.url" alt="A dog" class="banners, soon">
               <p>{{soonDog.nombre}}</p>
             </ion-card>
-            <ion-card class="long-text">
-              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
-              <p>{{soonDog.nombre}}</p>
-            </ion-card>
-            <ion-card class="long-text">
-              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
-              <p>{{soonDog.nombre}}</p>
-            </ion-card>
-            <ion-card class="long-text">
-              <img [src]="soonDog.url" alt="A dog" class="banners, soon">
-              <p>{{soonDog.nombre}}</p>
-            </ion-card>
+            <div class="middle-text, cards">
+              <ion-card class="middle-text">
+                <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+                <p>{{soonDog.nombre}}</p>
+              </ion-card>
+              <ion-card class="middle-text">
+                <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+                <p>{{soonDog.nombre}}</p>
+              </ion-card>
+              <ion-card class="middle-text">
+                <img [src]="soonDog.url" alt="A dog" class="banners, soon">
+                <p>{{soonDog.nombre}}</p>
+              </ion-card>
+            </div>
           </div>
           <ion-button>
             <ion-icon name="navigate-outline"></ion-icon>
