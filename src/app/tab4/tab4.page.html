@@ -156,7 +156,7 @@
       <ion-content>
         <form [formGroup]="formularioCitas" (ngSubmit)="onSubmit()">
           <ion-card>
-            <ion-item>
+            <ion-item *ngIf="!loading">
               <ion-label position="floating">Mascota</ion-label>
               <ion-select
                 aria-label="mascotas"
@@ -170,6 +170,9 @@
                   >{{ mascota.nombre }}</ion-select-option
                 >
               </ion-select>
+            </ion-item>
+            <ion-item *ngIf="loading">
+              <ion-label>Cargando Mascotas...</ion-label>
             </ion-item>
             <ion-item>
               <ion-button size="small" (click)="actualizarMascotas()">Actualizar</ion-button>
@@ -276,6 +279,9 @@
           </ion-item>
           <ion-item *ngIf="loading">
             <ion-label>Cargando Mascotas...</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-button size="small" (click)="actualizarMascotas()">Actualizar</ion-button>
           </ion-item>
         </ion-card>
         <div *ngIf="mascotaSeleccionada.citas && mascotaSeleccionada.citas.length > 0">
