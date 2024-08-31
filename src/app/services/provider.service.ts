@@ -30,4 +30,9 @@ export class ProviderService {
   putResponse(key: string, updatedData: any) {
     return this.http.put(`${this.URL2}/${key}.json`, updatedData);
   }
+
+  deleteResponse(key: string) {
+    return this.http.delete(`${this.URL2}/${key}.json`);
+  }
+  
 }

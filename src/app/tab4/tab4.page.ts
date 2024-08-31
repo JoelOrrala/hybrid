@@ -161,6 +161,11 @@ export class Tab4Page implements OnInit {
     this.loadMascotas();
   }
 
+  actualizarMascotas() {
+    this.loading = true; // Mostrar un indicador de carga si lo deseas
+    this.loadMascotas();
+  }
+
   loadMascotas() {
     this.dataProvider.getResponse().subscribe(async (response) => {
       if (response != null) {

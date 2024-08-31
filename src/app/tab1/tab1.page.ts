@@ -24,10 +24,12 @@ import {
   IonDatetime,
   IonSelect,
   IonSelectOption,
+  IonIcon,
 } from '@ionic/angular/standalone';
 import { Mascota } from '../interfaces/mascota';
 import { Cita } from '../interfaces/cita';
 import { PhotoService } from '../services/photo.service';
+import { MascotaConClave } from '../interfaces/mascota-con-clave';
 
 @Component({
   selector: 'app-tab1',
@@ -58,11 +60,12 @@ import { PhotoService } from '../services/photo.service';
     IonDatetime,
     IonSelect,
     IonSelectOption,
+    IonIcon
   ],
   providers: [ProviderService],
 })
 export class Tab1Page {
-  public mascotas: Mascota[] = [];
+  public mascotas: MascotaConClave[] = [];
   private selectedFile: File | null = null;
 
   constructor(
@@ -83,7 +86,10 @@ export class Tab1Page {
   loadData() {
     this.dataProvider.getResponse().subscribe(async (response) => {
       if (response != null) {
-        this.mascotas = Object.values(response) as Mascota[];
+        this.mascotas = Object.entries(response).map(([key, value]) => ({
+          ...(value as Mascota),
+          key,
+        })) as MascotaConClave[];
 
         for (const mascota of this.mascotas) {
           try {
@@ -148,6 +154,16 @@ export class Tab1Page {
         this.nuevaMascota.reset();
         this.selectedFile = null;
       });
+    }
+  }
+
+  eliminarMascota(mascota: MascotaConClave) {
+    if (mascota.key) {
+      this.dataProvider.deleteResponse(mascota.key).subscribe(() => {
+        this.loadData(); // Recargar la lista de mascotas después de eliminar
+      });
+    } else {
+      console.error('No se encontró la clave de la mascota en Firebase');
     }
   }
 }

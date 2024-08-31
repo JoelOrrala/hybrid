@@ -30,8 +30,12 @@
             <h2>{{ mascota.nombre }}</h2>
             <p>{{ mascota.tipo }}</p>
           </ion-label>
+          <ion-button fill="clear" slot="end" color="danger" (click)="eliminarMascota(mascota)">
+            <img src="assets/icon/eliminar.png" alt="Pet Icon" class="icono-pet"/>
+          </ion-button>
         </ion-item>
       </ion-list>
+      
     </ion-card-content>
   </ion-card>
 
@@ -90,6 +94,7 @@
               <ion-select-option value="Perro">Perro</ion-select-option>
               <ion-select-option value="Gato">Gato</ion-select-option>
               <ion-select-option value="Pez">Pez</ion-select-option>
+              <ion-select-option value="Hámster">Hámster</ion-select-option>
             </ion-select>
           </ion-item>
           <ion-item>
