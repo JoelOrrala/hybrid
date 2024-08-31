@@ -127,7 +127,7 @@
             </ion-card>
           </div>
           <ion-button>
-            <ion-icon name="add-outline"></ion-icon>
+            <ion-icon name="navigate-outline"></ion-icon>
             Soon
           </ion-button>
         </ion-card>
@@ -226,7 +226,7 @@
             id="formularioEnviado"
             expand="full"
             type="submit"
-            [disabled]="formularioCitas.invalid"
+            [disabled]="formularioCitas.invalid || formularioCitas.controls['mascota'].value === defaultMascota"
             (click)="modal.dismiss()"
             >Agendar Cita</ion-button
           >
@@ -287,10 +287,10 @@
           </ion-radio-group>
       </div>
         <ion-button
-          id="formularioEnviado1"
+          id="formularioEnviado2"
           expand="full"
           type="submit"
-          [disabled]="eliminarCita.invalid"
+          [disabled]="eliminarCita.invalid || eliminarCita.controls['cita'].value === ''"
           (click)="modal2.dismiss()"
           >Eliminar Cita</ion-button
         >

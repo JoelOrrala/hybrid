@@ -28,7 +28,7 @@ import {
   IonRadio,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { addOutline, trashOutline } from 'ionicons/icons';
+import { addOutline, trashOutline, navigateOutline } from 'ionicons/icons';
 import { AnimationController, AlertController } from '@ionic/angular';
 import { IonModal } from '@ionic/angular/standalone';
 import {
@@ -128,7 +128,7 @@ export class Tab4Page implements OnInit {
     private alertController: AlertController,
     private router: Router,
   ) {
-    addIcons({ addOutline, trashOutline });
+    addIcons({ addOutline, trashOutline, navigateOutline });
 
     const now = new Date();
     const tomorrow = addDays(now, 1);
@@ -416,7 +416,7 @@ export class Tab4Page implements OnInit {
             this.loadMascotas();
             this.deletedAppAlert();
             this.eliminarCita.reset();
-            this.setDefaultMascota();
+            this.setDefaultsDel();
           });
       } else {
         console.log('No se encontró la clave de la mascota en Firebase');
@@ -424,7 +424,11 @@ export class Tab4Page implements OnInit {
     }
   }
 
-  setDefaultMascota() {
+  setDefaultsDel() {
+    this.eliminarCita.patchValue({
+      mascota: this.defaultMascota,
+      cita: '',
+    });
     this.mascotaSeleccionada = {key: '', nombre: '', fecha_nacimiento: '', raza: '', foto: '', citas: [], tipo: ''};
   }
 }
